@@ -5,10 +5,10 @@ function buttonAction() {
   alert("Information was submitted.");
 }
 
-const Contact = () => {
+const SignIn = () => {
   return (
     <section id="contact">
-        <h1>Contact:</h1>
+        <h1>Sign In:</h1>
         <br></br>
         <form>
           <label for="email">Email:</label>
@@ -18,9 +18,11 @@ const Contact = () => {
           <input type="text" id="password" name="password" value=""></input>
           <br></br>
           <input type="submit" value="Submit" onClick={buttonAction}></input>
-        </form>      
+        </form>
+        <h3>Don't Have an Account?</h3>
+        <button>Create</button>      
     </section>
   )
 };
 
-export default Contact;
+export default SignIn;
