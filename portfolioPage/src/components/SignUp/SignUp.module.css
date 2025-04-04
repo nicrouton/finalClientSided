@@ -1,20 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
-
-.emailLabel {
-    padding: 20px;
-}
-
-.usernameLabel {
-    padding: 20px;
-}
-
-.passwordLabel {
-    padding: 20px;
-}
-
 
