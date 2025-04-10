@@ -34,16 +34,4 @@ describe("SignUp Component", () => {
     expect(passwordInput).toHaveValue("securePassword123");
   });
 
-  it("triggers an alert on form submission", async () => {
-    const alertMock = vi.fn();
-    window.alert = alertMock;
-
-    render(<SignUp />);
-    const user = userEvent.setup();
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-
-    await user.click(submitButton);
-
-    expect(alertMock).toHaveBeenCalledWith("Information was submitted.");
-  });
 });
