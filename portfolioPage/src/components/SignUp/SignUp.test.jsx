@@ -34,4 +34,4 @@ describe("SignUp Component", () => {
     expect(passwordInput).toHaveValue("securePassword123");
   });
 
-});
+})
