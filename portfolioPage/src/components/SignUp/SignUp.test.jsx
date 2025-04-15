@@ -20,7 +20,6 @@ describe("SignUp Component", () => {
   it("allows the user to fill out the form fields", async () => {
     render(<SignUp />);
     const user = userEvent.setup();
-
     const emailInput = screen.getByLabelText("Email:");
     const usernameInput = screen.getByLabelText("Username:");
     const passwordInput = screen.getByLabelText("Password:");
