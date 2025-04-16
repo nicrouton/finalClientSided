@@ -5,21 +5,23 @@ import cors from 'cors';
 
 dotenv.config();
 const app = express();
-const baseurl = process.env.ENDPOINT;
-const apiKey = process.env.IMDB_API;
+const baseurl = 'https://api.themoviedb.org';
+const apiKey = process.env.API_IMDB;
 const port = process.env.PORT;
 console.log(baseurl)
 app.use(cors(
     {
-        origin: ['http://localhost:5000', "https://api.themoviedb.org"],
+        origin: ["http://localhost:5173", "http://localhost:5000"],
         methods: ["GET", "POST"],
-        allowedHeaders: ["Constent-Type", "Authorization"]
+        allowedHeaders: ["Content-Type", "Authorization"]
     }
 ))
 
-app.get('/api/articles', async(req, res) => {
+app.get('/api/movies', async(req, res) => {
     const { q } = req.query;
-    const endpoint = `${baseurl}?q=`;
+    const endpoint = `${baseurl}/3/movie/popular?api_key=${apiKey}`;
+    console.log(endpoint);
+    console.log('Before try and fetch code in proxy.');
     try {
         const response = await fetch(endpoint);
         if (!response.ok) {
@@ -28,8 +30,8 @@ app.get('/api/articles', async(req, res) => {
         const data = await response.json();
         res.json(data);
     } catch(error) {
-        console.error('Error fetching articles', error);
-        res.status(500).json( {error: 'failed to fetch articles'});
+        console.error('Error fetching movies', error);
+        res.status(500).json( {error: 'failed to fetch movies'});
     }
 })
 
