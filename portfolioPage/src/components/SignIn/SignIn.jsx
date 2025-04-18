@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import './SignIn.module.css';
 
 function buttonAction() {
@@ -6,8 +6,6 @@ function buttonAction() {
 }
 
 const SignIn = () => {
-  const {username, setUsername} = useState('Hello');
-  const {password, setPassword} = useState('');
   const [form, setForm] = useState({
     email: '',
     password: ''
@@ -22,7 +20,7 @@ const SignIn = () => {
 
   };
   return (
-    <section id="contact">
+    <section id="SignIn">
         <h1>Sign In:</h1>
         <br></br>
         <form>

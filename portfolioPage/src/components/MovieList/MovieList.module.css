@@ -1,0 +1,9 @@
+img {
+    width: 10%;
+    height: 15%;
+}
+
+.moviePage {
+    display: flex;
+    flex-direction: row;
+}
