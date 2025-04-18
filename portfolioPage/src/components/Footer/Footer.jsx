@@ -1,12 +1,20 @@
 import React from 'react';
 import './Footer.module.css';
 
-const Footer = () => {
-  return (
-    <footer>
-        <a href='www.linkedin.com/in/nicholas-c-6b09a2a8'><p>LinkedIn Profile</p></a><p>copyright: Nicrouton</p>    
-    </footer>
-  )
-};
+function Footer() {
 
-export default Footer;
+  const currentYear = new Date().getFullYear()
+
+  return (
+      <div className="container">
+          <div className="text-center mt-4 py-4 d-md-flex justify-content-center gap-4">
+              <div className="text-white mb-2" style={{ marginTop: "1px" }}>
+                  © {currentYear} WatchClub, All rights are reserved.
+              </div>
+          </div>
+      </div>
+  )
+}
+
+export default Footer
+
