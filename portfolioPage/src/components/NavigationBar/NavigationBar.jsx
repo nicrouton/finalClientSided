@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { setInput, setLanguage, setSortedBy, setWhichMovies, setGenre } from "../redux/features/navigationBar/navigationBarSlice"
-import { getSearchAndQuery } from "../redux/features/searchAndQuery/searchAndQuerySlice"
-import logo from "../assets/images/logo.png"
+import { setInput, setLanguage, setSortedBy, setWhichMovies, setGenre } from "../../redux/features/navigationBar/navigationBarSlice";
+import { getSearchAndQuery } from "../../redux/features/searchAndQuery/searchAndQuerySlice";
+import logo from "../../assets/images/logo.png"
 
 import { Navbar, Nav, NavDropdown, Form, Button } from "react-bootstrap"
 
-import "../styles/NavigationBar.css"
+import "./NavigationBar.css";
 
-import * as Functions from "../localStorage/localStorage"
+import * as Functions from "../../localStorage/localStorage";
 
 const genres = [
   { id: "all", name: "All Genres" },

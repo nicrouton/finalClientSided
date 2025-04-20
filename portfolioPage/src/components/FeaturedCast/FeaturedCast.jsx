@@ -1,15 +1,15 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getCredits } from "../redux/features/credits/credits"
+import { getCredits } from "../../redux/features/credits/credits"
 
 import Slider from "react-slick"
-import { settings } from "../helpers/sliderSettings"
+import { settings } from "../../helpers/sliderSettings";
 
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import "react-lazy-load-image-component/src/effects/blur.css"
-import personPlaceholder from "../assets/images/person.png"
+import personPlaceholder from "../../assets/images/person.png"
 
-import "../styles/FeaturedCast.css"
+import "./FeaturedCast.css";
 
 function FeaturedCast(props) {
 
@@ -32,7 +32,6 @@ function FeaturedCast(props) {
                         <div className="container">
                             {<div className="featured-cast-container">
                                 <h3>
-                                    {language === "en-US" ? "Featured Cast" : "Öne Çıkan Oyuncular"}
                                     <span style={{ color: "#ffffff99" }}> ({cast.length})</span>
                                 </h3>
                                 <Slider {...settings}>
