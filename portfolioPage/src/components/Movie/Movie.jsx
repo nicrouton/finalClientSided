@@ -162,13 +162,13 @@ function Movie(props) {
                                             <div className="bottom">{novel.name}</div>
                                         </div>
                                     )}
-                                    {movie.budget !== 0 && (
+                                    {typeof movie.budget === "number" && movie.budget !== 0 && (
                                         <div>
                                             <div className="top">Budget</div>
                                             <div className="bottom">${movie.budget.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
                                         </div>
                                     )}
-                                    {movie.revenue !== 0 && (
+                                    {typeof movie.revenue === "number" && movie.revenue !== 0 && (
                                         <div>
                                             <div className="top">Revenue</div>
                                             <div className="bottom">${movie.revenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
