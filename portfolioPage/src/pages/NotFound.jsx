@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet"
 import { useEffect } from "react"
-import Footer from "../components/Footer"
+import Footer from "../components/Footer/Footer";
 
 function NotFound() {
 

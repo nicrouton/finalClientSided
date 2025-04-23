@@ -1,31 +1,24 @@
+import React from 'react';
 import { Helmet } from "react-helmet"
-import { useEffect } from "react"
-import Footer from "../components/Footer/Footer";
+import { useSelector } from "react-redux"
 
-function NotFound() {
+import Movies from "../components/Movies/Movies"
+import SearchAndQuery from "../components/SearchAndQuery"
+import Footer from "../components/Footer/Footer"
 
-    useEffect(() => {
-        document.title = `404 Error | WatchClub`
-        return () => {
-            document.title = "WatchClub | Homepage"
-        }
-    }, [])
+function Home() {
+
+    const input = useSelector((state) => state.navigationBarReducer.input)
 
     return (
         <>
             <Helmet>
-                <meta name="description" content="404 Error! We can't find the page you're looking for." />
+                <meta name="description" content="Discover your favorite movies. The site provides important details such as the story, director, budget, featured cast, images, recommendations and trailers." />
             </Helmet>
-            <div className="container">
-                <p className="text-secondary mt-5 pt-5">Oops! We can't find the page you're looking for</p>
-                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "75vh" }}>
-                    <p style={{ fontSize: "50px" }} className="text-secondary">404</p>
-                    <p style={{ fontSize: "50px" }} className="text-secondary">ERROR</p>
-                </div>
-            </div>
+            {input == "" ? <Movies /> : <SearchAndQuery />}
             <Footer />
         </>
     )
 }
 
-export default NotFound
+export default Home

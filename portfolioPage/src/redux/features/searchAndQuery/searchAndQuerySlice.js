@@ -1,15 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const api_key = import.meta.env.VITE_API_KEY
 const base_url = import.meta.env.VITE_BASE_URL
 
+
 export const getSearchAndQuery = createAsyncThunk("getSearchAndQuery", async (input) => {
-    let movies = []
-    const response = await axios.get(`${base_url}/search/movie?query=${input}&api_key=${api_key}`)
-    movies = [...movies, ...response.data.results]
-    return movies
-})
+    const response = await axios.get(`${base_url}/search?query=${input}`);
+    return response.data;
+});
 
 const initialState = {
     loading: false,

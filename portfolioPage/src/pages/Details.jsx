@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -14,7 +15,6 @@ function Details() {
 
     const params = useParams()
     const [showVideo, setShowVideo] = useState(false)
-    // const [showRatePopup, setShowRatePopup] = useState(false)
     const [showReviewPopup, setShowReviewPopup] = useState(false)
     const [ratingValue, setRatingValue] = useState("")
     const [reviewText, setReviewText] = useState("")
@@ -30,18 +30,6 @@ function Details() {
     const loading_movie = useSelector((state) => state.movieReducer.loading)
     const movie_reviews = useSelector((state) => state.movieReducer.reviews)
 
-
-    // const handleRateSubmit = (e) => {
-    //     e.preventDefault()
-    //     // if (ratingValue && !isNaN(ratingValue) && ratingValue >= 0.5 && ratingValue <= 10) {
-    //     //     dispatch(rateMovie({ movieId: params.id, rating: parseFloat(ratingValue) }))
-    //     //     setShowRatePopup(false)
-    //     //     setRatingValue("")
-    //     // }
-    //     console.log("Rating submitted:", ratingValue);
-    //     setShowRatePopup(false);
-
-    // }
 
     const handleReviewSubmit = (e) => {
         e.preventDefault()
@@ -68,22 +56,6 @@ function Details() {
             <FeaturedCast id={params.id} />
             <div className="container">
                 <div className="row">
-
-
-                    {/* <div className="col-12 mb-4">
-                        <button
-                            className="btn btn-danger me-2"
-                            onClick={() => setShowRatePopup(true)}
-                        >
-                            Rate Movie
-                        </button>
-                        <button
-                            className="btn btn-warning"
-                            onClick={() => setShowReviewPopup(true)}
-                        >
-                            Review
-                        </button>
-                    </div> */}
                 
                 
                     {
@@ -106,12 +78,6 @@ function Details() {
             <div style={{ margin: "60px" }}>
                 <h3 className="my-4">Reviews</h3>
                 <div className="d-flex">
-                    {/* <button
-                        className="btn btn-danger me-4"
-                        onClick={() => setShowRatePopup(true)}
-                    >
-                        Rate Movie
-                    </button> */}
                     <button
                         className="btn btn-warning"
                         onClick={() => setShowReviewPopup(true)}
@@ -138,41 +104,6 @@ function Details() {
                 }
             </div>
             {!loading_movie && <Footer />}
-
-
-
-
-            {/* Rate Movie Popup */}
-            {/* {showRatePopup && (
-                <div className="modal" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content bg-dark text-white">
-                            <div className="modal-header">
-                                <h5 className="modal-title">Rate Movie</h5>
-                                <button type="button" className="btn-close btn-close-white" onClick={() => setShowRatePopup(false)}></button>
-                            </div>
-                            <div className="modal-body">
-                                <form onSubmit={handleRateSubmit}>
-                                    <div className="mb-3">
-                                        <label className="form-label">Rating (0.5 - 10)</label>
-                                        <input
-                                            type="number"
-                                            className="form-control bg-white text-black"
-                                            value={ratingValue}
-                                            onChange={(e) => setRatingValue(e.target.value)}
-                                            step="0.1"
-                                            min="0.5"
-                                            max="10"
-                                            required
-                                        />
-                                    </div>
-                                    <button type="submit" className="btn btn-danger">Submit Rating</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )} */}
 
             {/* Review Popup */}
             {showReviewPopup && (

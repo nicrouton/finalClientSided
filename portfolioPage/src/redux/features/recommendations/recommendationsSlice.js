@@ -1,24 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const api_key = import.meta.env.VITE_API_KEY
 const base_url = import.meta.env.VITE_BASE_URL
 
-// recommendations
 export const getRecommendations = createAsyncThunk("getRecommendations", async (id) => {
-    const response = await axios.get(`${base_url}/movie/${id}/recommendations?api_key=${api_key}`)
-    const filtered_results = response.data.results.filter(recommendation => recommendation.backdrop_path !== null)
-    if (filtered_results.length >= 8) {
-        let new_filtered_results = []
-        for (let i = 0; i < 8; i++) {
-            new_filtered_results.push(filtered_results[i])
-        }
-        return new_filtered_results
-    }
-    else {
-        return filtered_results
-    }
-})
+    const response = await axios.get(`${base_url}/recommendations/${id}`);
+    return response.data;
+});
 
 const initialState = {
     loading: false,

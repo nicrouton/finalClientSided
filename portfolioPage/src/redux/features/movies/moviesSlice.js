@@ -1,29 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const api_key = import.meta.env.VITE_API_KEY
-const base_url = import.meta.env.VITE_BASE_URL
+const base_url = import.meta.env.VITE_IMDB_BASE_ENDPOINT
 
-export const getMovies = createAsyncThunk("getMovies", async ({ endpoint, language }) => {
-
-    let movies = []
-    let total_pages
-
-    if (endpoint === "upcoming" || endpoint === "now_playing") {
-        total_pages = 5
-    } else {
-        total_pages = 15
-    }
-
-    for (let current_page = 1; current_page <= total_pages; current_page++) {
-        const response = await axios.get(`${base_url}/movie/${endpoint}?api_key=${api_key}&language=${language}&page=${current_page}`)
-        movies = [...movies, ...response.data.results]
-    }
-
-    const key = 'title'
-    const unique_movies = [...new Map(movies.map(item => [item[key], item])).values()]
-    return unique_movies
-})
+export const getMovies = createAsyncThunk("getMovies", async ({ endpoint }) => {
+    const response = await axios.get(`${base_url}/movies`, {
+        params: { endpoint }
+    });
+    return response.data;
+});
 
 const initialState = {
     loading: false,
@@ -36,18 +21,19 @@ export const moviesSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getMovies.pending, (state) => {
-            state.loading = true
-        }),
-            builder.addCase(getMovies.fulfilled, (state, action) => {
-                state.loading = false
-                state.movies = action.payload
-            }),
-            builder.addCase(getMovies.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
+        builder
+            .addCase(getMovies.pending, (state) => {
+                state.loading = true;
             })
+            .addCase(getMovies.fulfilled, (state, action) => {
+                state.loading = false;
+                state.movies = action.payload;
+            })
+            .addCase(getMovies.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            });
     }
-})
+});
 
-export default moviesSlice.reducer
+export default moviesSlice.reducer;

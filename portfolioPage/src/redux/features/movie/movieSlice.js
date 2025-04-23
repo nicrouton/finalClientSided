@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const api_key = import.meta.env.VITE_API_KEY
-const base_url = import.meta.env.VITE_BASE_URL
+const base_url = import.meta.env.VITE_IMDB_BASE_ENDPOINT
 const access_token = import.meta.env.VITE_ACCESS_TOKEN 
 
 // Fetch movie details and reviews

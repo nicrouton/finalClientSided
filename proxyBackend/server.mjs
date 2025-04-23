@@ -1,40 +1,138 @@
 import express from 'express';
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
+
 const app = express();
+const port = process.env.PORT || 5001;
 const baseurl = 'https://api.themoviedb.org';
 const apiKey = process.env.API_IMDB;
-const port = process.env.PORT;
-console.log(baseurl)
-app.use(cors(
-    {
-        origin: ["http://localhost:5173", "http://localhost:5000"],
-        methods: ["GET", "POST"],
-        allowedHeaders: ["Content-Type", "Authorization"]
-    }
-))
 
-app.get('/api/movies', async(req, res) => {
-    const { q } = req.query;
-    const endpoint = `${baseurl}/3/movie/popular?api_key=${apiKey}`;
-    console.log(endpoint);
-    console.log('Before try and fetch code in proxy.');
-    try {
-        const response = await fetch(endpoint);
-        if (!response.ok) {
-            throw new Error(`HTTP error`);
-        }
-        const data = await response.json();
-        res.json(data);
-    } catch(error) {
-        console.error('Error fetching movies', error);
-        res.status(500).json( {error: 'failed to fetch movies'});
-    }
-})
+// CORS setup
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
 
-app.listen(port || 5000, () => {
-    console.log(`server is running on ${port}`);
-})
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+
+app.get('/api/credits/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+  try {
+    const response = await axios.get(`${baseurl}/3/movie/${movieId}/credits`, {
+      params: { api_key: apiKey }
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching credits', error.message);
+    res.status(500).json({ error: 'Failed to fetch credits' });
+  }
+});
+
+// Get movie images
+app.get('/api/images/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+  try {
+    const response = await axios.get(`${baseurl}/3/movie/${movieId}/images`, {
+      params: { api_key: apiKey }
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching images', error.message);
+    res.status(500).json({ error: 'Failed to fetch images' });
+  }
+});
+
+// Get movies
+app.get('/api/movies', async (req, res) => {
+  const { endpoint } = req.query;
+  try {
+    let movies = [];
+    const total_pages = (endpoint === "upcoming" || endpoint === "now_playing") ? 5 : 15;
+
+    for (let page = 1; page <= total_pages; page++) {
+      const response = await axios.get(`${baseurl}/3/movie/${endpoint}`, {
+        params: { api_key: apiKey, page }
+      });
+      movies = [...movies, ...response.data.results];
+    }
+
+    const uniqueMovies = [...new Map(movies.map(item => [item.title, item])).values()];
+    res.json(uniqueMovies);
+  } catch (error) {
+    console.error('Error fetching movies', error.message);
+    res.status(500).json({ error: 'Failed to fetch movies' });
+  }
+});
+
+// Get movie recommendations
+app.get('/api/recommendations/:movieId', async (req, res) => {
+  const { movieId } = req.params;
+  try {
+    const response = await axios.get(`${baseurl}/3/movie/${movieId}/recommendations`, {
+      params: { api_key: apiKey }
+    });
+    const filtered = response.data.results.filter(r => r.backdrop_path !== null);
+    res.json(filtered.length >= 8 ? filtered.slice(0, 8) : filtered);
+  } catch (error) {
+    console.error('Error fetching recommendations:', error.message);
+    res.status(500).json({ error: 'Failed to fetch recommendations' });
+  }
+});
+
+// Search movies
+app.get('/api/search', async (req, res) => {
+  const input = req.query.query;
+  if (!input) return res.status(400).json({ error: "Query parameter 'query' is required" });
+
+  try {
+    const response = await axios.get(`${baseurl}/3/search/movie`, {
+      params: { api_key: apiKey, query: input }
+    });
+    res.json(response.data.results);
+  } catch (error) {
+    console.error('Error fetching search results:', error.message);
+    res.status(500).json({ error: 'Failed to fetch search results' });
+  }
+});
+
+// Get movie videos (trailers, etc.)
+app.get('/api/video/:id', async (req, res) => {
+  const { id } = req.params;
+  const { language } = req.query;
+
+  try {
+    let response = await axios.get(`${baseurl}/3/movie/${id}/videos`, {
+      params: { api_key: apiKey, language }
+    });
+
+    if (response.data.results.length === 0) {
+      response = await axios.get(`${baseurl}/3/movie/${id}/videos`, {
+        params: { api_key: apiKey, language: 'en-US' }
+      });
+    }
+
+    const videoTypes = ["Trailer", "Teaser", "Featurette", "Clip", "Behind the Scenes"];
+    for (let type of videoTypes) {
+      const match = response.data.results.find(v => v.type === type && v.key);
+      if (match) {
+        return res.json({ type: match.type, key: match.key });
+      }
+    }
+
+    res.json(null);
+  } catch (error) {
+    console.error('Error fetching video:', error.message);
+    res.status(500).json({ error: 'Failed to fetch video' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});

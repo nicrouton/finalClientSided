@@ -1,3 +1,4 @@
+import React from "react"
 import { Helmet } from "react-helmet"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -37,7 +38,7 @@ function Movie(props) {
         }
     }, [loading_movie, movie])
 
-    let { crew } = useSelector((state) => state.creditsReducer.credits)
+    const { crew = [] } = useSelector(state => state.movieData) || {};
     let director = crew?.find((crew) => crew.department === "Directing" && crew.job === "Director")
     let novel = crew?.find((crew) => crew.department === "Writing" && crew.job === "Novel")
 

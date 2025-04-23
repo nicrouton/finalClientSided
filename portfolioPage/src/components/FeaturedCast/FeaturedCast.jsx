@@ -1,66 +1,41 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { getCredits } from "../../redux/features/credits/credits"
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCredits } from "../../redux/features/credits/credits";
 
-import Slider from "react-slick"
-import { settings } from "../../helpers/sliderSettings";
+function FeaturedCast({ id }) {
+  const dispatch = useDispatch();
+  const credits = useSelector((state) => state.creditsReducer.credits);
 
-import { LazyLoadImage } from "react-lazy-load-image-component"
-import "react-lazy-load-image-component/src/effects/blur.css"
-import personPlaceholder from "../../assets/images/person.png"
+  useEffect(() => {
+    const numericId = id.split("-")[0]; // Extract only the number
+    dispatch(getCredits(numericId));
+  }, [dispatch, id]);
 
-import "./FeaturedCast.css";
+  if (!credits) {
+    return <div>Loading credits...</div>;
+  }
 
-function FeaturedCast(props) {
-
-    const dispatch = useDispatch()
-    const language = useSelector((state) => state.navigationBarReducer.language)
-
-    useEffect(() => {
-        dispatch(getCredits(props.id))
-    }, [dispatch, props.id])
-
-    const { cast } = useSelector((state) => state.creditsReducer.credits)
-    const loading_credits = useSelector((state) => state.creditsReducer.loading)
-    const loading_movie = useSelector((state) => state.movieReducer.loading)
-
-    return (
-        <>
-            {cast?.length >= 9 &&
-                <>
-                    {(!loading_credits && !loading_movie) &&
-                        <div className="container">
-                            {<div className="featured-cast-container">
-                                <h3>
-                                    <span style={{ color: "#ffffff99" }}> ({cast.length})</span>
-                                </h3>
-                                <Slider {...settings}>
-                                    {cast.map((cast, index) => (
-                                        <div className="cast" key={index}>
-                                            <div className="img">
-                                                <LazyLoadImage
-                                                    src={cast.profile_path ? `https://image.tmdb.org/t/p/w300/${cast.profile_path}` : personPlaceholder}
-                                                    alt={cast.name + " image"}
-                                                    placeholderSrc={personPlaceholder}
-                                                    effect="blur"
-                                                    width="100%"
-                                                    height="auto"
-                                                    style={{ color: "white", aspectRatio: 3 / 5 }}
-                                                />
-                                            </div>
-
-                                            <div className="name">{cast.name}</div>
-                                            <div className="character">{cast.character}</div>
-                                        </div>
-                                    ))}
-                                </Slider>
-                            </div>}
-                        </div>
-                    }
-                </>
-            }
-        </>
-    )
+  return (
+    <div className="container my-5">
+      <h3 className="text-white">Featured Cast</h3>
+      <div className="row">
+        {credits.cast?.slice(0, 6).map((actor, index) => (
+          <div key={index} className="col-6 col-md-4 col-lg-2 text-center">
+            <img
+              src={
+                actor.profile_path
+                  ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
+                  : "https://via.placeholder.com/200x300?text=No+Image"
+              }
+              alt={actor.name}
+              className="img-fluid rounded"
+            />
+            <p style={{ marginTop: "5px", fontSize: "14px", color: "white" }}>{actor.name}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default FeaturedCast
+export default FeaturedCast;
