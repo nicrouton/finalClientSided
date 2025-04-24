@@ -53,11 +53,18 @@
 }
 
 .title {
-    font-size: 2.2rem;
+    color: rgb(248, 245, 245);
+    font-size: 0.9rem;
     font-weight: bold;
-    letter-spacing: 1px;
-    margin-right: 10px;
-}
+    text-align: center;
+  
+    white-space: normal;       
+    text-overflow: unset;
+    min-height: 2.5em;         
+    line-height: 1.2;
+    padding: 0 4px;
+  }
+  
 
 .title:hover {
     cursor: default;
@@ -91,7 +98,7 @@
 }
 
 .imdb-rating > .bs-star-icon {
-    color: black;
+    color: rgb(243, 239, 239);
     height: 2em;
     width: 1.2em;
 }
@@ -153,14 +160,27 @@
     margin-bottom: 5px;
 }
 
-/* Media Queries */
+
 @media (max-width: 992px) {
     .react-bs-container > .flex-item > .img {
         width: 16rem;
         height: 23rem;
     }
 
-    .title,
+    .title {
+        color: white;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-align: center;
+      
+        white-space: normal;       
+        overflow: visible;
+        text-overflow: unset;
+        min-height: 2.5em;        
+        line-height: 1.2;
+        padding: 0 4px;
+      }
+      
     .release-date {
         font-size: 1.8rem;
     }
@@ -208,7 +228,20 @@
         margin: 0 auto;
     }
 
-    .title,
+    .title {
+        color: white;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-align: center;
+      
+        white-space: normal;       
+        overflow: visible;
+        text-overflow: unset;
+        min-height: 2.5em;         
+        line-height: 1.2;
+        padding: 0 4px;
+      }
+      
     .release-date {
         font-size: 1.6rem;
     }
