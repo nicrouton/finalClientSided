@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const base_url = '/api';
+const base_url = import.meta.env.VITE_IMDB_BASE_ENDPOINT;
 
 export const getMovieAndReviews = createAsyncThunk(
   "getMovieAndReviews",

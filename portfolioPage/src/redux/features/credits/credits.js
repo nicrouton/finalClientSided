@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const base_url = '/api';
+const base_url = import.meta.env.VITE_IMDB_BASE_ENDPOINT;
+
 
 export const getCredits = createAsyncThunk("credits/getCredits", async (id) => {
   const numericId = id.split("-")[0];

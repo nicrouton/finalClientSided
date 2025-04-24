@@ -12,8 +12,21 @@ const baseurl = 'https://api.themoviedb.org';
 const apiKey = process.env.API_IMDB;
 
 // CORS Setup
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://watchclub-frontend-labib-khan.onrender.com',
+  'https://watchclub-backend-labib-khan.onrender.com'
+];
+
 const corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true

@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const base_url = import.meta.env.VITE_IMDB_BASE_ENDPOINT;
+
 export const getImages = createAsyncThunk("images/getImages", async (id) => {
     const numericId = id.split("-")[0]; 
-    const response = await axios.get(`http://localhost:5001/api/images/${numericId}`);
+    const response = await axios.get(`${base_url}/images/${numericId}`);
     return response.data;
 });
 
