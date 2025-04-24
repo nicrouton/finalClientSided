@@ -9,6 +9,8 @@ import Images from "../components/Images/Images";
 import Footer from "../components/Footer/Footer";
 import Recommendations from "../components/Recommendations/Recommendations";
 import { addReview, postRating } from "../redux/features/movie/movieSlice";
+import userPlaceholder from "../assets/images/person.png";
+
 
 function Details() {
     const params = useParams();
@@ -66,11 +68,18 @@ function Details() {
                     movie_reviews.map((review, index) => (
                         <div key={index} className="my-4 text-white">
                             <div className="d-flex align-items-center mb-2 gap-2">
-                                <img
-                                    src={`https://image.tmdb.org/t/p/original/${review.author_details.avatar_path}`}
-                                    alt="user-avatar"
-                                    style={{ height: "40px", width: "40px", borderRadius: "20px" }}
-                                />
+                            <img
+  src={
+    review.author_details.avatar_path
+      ? review.author_details.avatar_path.startsWith("/https")
+        ? review.author_details.avatar_path.slice(1)
+        : `https://image.tmdb.org/t/p/original/${review.author_details.avatar_path}`
+      : userPlaceholder
+  }
+  alt="user-avatar"
+  style={{ height: "40px", width: "40px", borderRadius: "20px", objectFit: "cover" }}
+/>
+
                                 <h5 style={{ color: "gray", fontSize: "18px" }}>{review.author}</h5>
                             </div>
                             <p style={{ fontSize: "14px" }}>{review.content}</p>

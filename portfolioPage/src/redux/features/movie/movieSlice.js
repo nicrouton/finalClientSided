@@ -42,7 +42,7 @@ const movieSlice = createSlice({
         author_details: {
           name: "newuser",
           username: "newuser",
-          avatar_path: "newuser",
+          avatar_path: null,
           rating: action.payload.rating
         },
         content: action.payload.review,
