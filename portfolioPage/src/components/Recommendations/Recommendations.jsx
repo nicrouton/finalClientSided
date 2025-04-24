@@ -19,8 +19,12 @@ function Recommendations({ id, setShowVideo }) {
   const loading_movie = useSelector((state) => state.movieReducer.loading)
 
   useEffect(() => {
-    dispatch(getRecommendations(id))
-  }, [dispatch, id])
+    if (id) {
+      const cleanId = id.split("-")[0];
+      dispatch(getRecommendations(cleanId));
+    }
+  }, [dispatch, id]);
+  
 
   function handleClick() {
     window.scrollTo(0, 0)
@@ -40,16 +44,23 @@ function Recommendations({ id, setShowVideo }) {
                 to={`/movie/${rec.id}-${rec.title?.replaceAll(" ", "-").toLowerCase()}`}
                 onClick={handleClick}
               >
-                <LazyLoadImage
-                  className="img"
-                  src={`https://image.tmdb.org/t/p/w250_and_h141_face/${rec.backdrop_path}`}
-                  alt={`${rec.title} background`}
-                  placeholderSrc={posterPlaceholder}
-                  effect="blur"
-                  width="100%"
-                  height="auto"
-                  style={{ aspectRatio: 3 / 2 }}
-                />
+              <LazyLoadImage
+                className="img"
+                src={
+                rec.backdrop_path? `https://image.tmdb.org/t/p/w250_and_h141_face${rec.backdrop_path}`: posterPlaceholder
+                }
+                onError={(e) => {
+                e.target.onerror = null; 
+                e.target.src = posterPlaceholder;
+                }}
+                alt={`${rec.title} background`}
+                placeholderSrc={posterPlaceholder}
+                effect="blur"
+                width="100%"
+                height="auto"
+                style={{ aspectRatio: 3 / 2 }}
+              />
+
               </Link>
               <div className="position-absolute recommendation-title fw-bold">{rec.title}</div>
             </div>
