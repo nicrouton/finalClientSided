@@ -1,42 +1,71 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getRecommendations } from "../../redux/features/recommendations/recommendationsSlice";
-import { Link } from "react-router-dom";
+import { useEffect } from "react"
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { getRecommendations } from "../../redux/features/recommendations/recommendationsSlice"
+
+import { LazyLoadImage } from "react-lazy-load-image-component"
+import "react-lazy-load-image-component/src/effects/blur.css"
+import posterPlaceholder from "../../assets/images/poster.webp"
+
+import "./Recommendations.css"
 
 function Recommendations({ id, setShowVideo }) {
-  const dispatch = useDispatch();
-  const recommendations = useSelector((state) => state.recommendationsReducer.recommendations);
+  const dispatch = useDispatch()
+  const language = useSelector((state) => state.navigationBarReducer.language)
+  const recommendations = useSelector((state) => state.recommendationsReducer.recommendations)
+  const loading_recommendations = useSelector((state) => state.recommendationsReducer.loading)
+  const loading_images = useSelector((state) => state.imagesReducer.loading)
+  const loading_credits = useSelector((state) => state.creditsReducer.loading)
+  const loading_movie = useSelector((state) => state.movieReducer.loading)
 
   useEffect(() => {
-    dispatch(getRecommendations(id));
-  }, [dispatch, id]);
+    dispatch(getRecommendations(id))
+  }, [dispatch, id])
+
+  function handleClick() {
+    window.scrollTo(0, 0)
+    if (setShowVideo) setShowVideo(false)
+  }
+
+  if (loading_recommendations || loading_images || loading_credits || loading_movie) return null
 
   return (
-    <div className="recommendations my-4">
-      <h3 className="mb-3">Recommended</h3>
-      {Array.isArray(recommendations) && recommendations.length > 0 ? (
-        recommendations.map((movie, index) => (
-          <Link
-            key={index}
-            to={`/movie/${movie.id}-${movie.title.replaceAll(" ", "-").toLowerCase()}`}
-            className="text-decoration-none text-white"
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            <div className="mb-3 d-flex align-items-center">
-              <img
-                src={`https://image.tmdb.org/t/p/w154${movie.poster_path}`}
-                alt={movie.title}
-                style={{ width: "50px", height: "75px", borderRadius: "8px", marginRight: "10px" }}
-              />
-              <p className="m-0">{movie.title}</p>
+    <div className="recommendations-container">
+      <h3>{language === "en-US" ? "Recommendations" : "Tavsiyeler"}</h3>
+      {recommendations.length > 0 ? (
+        <div className="row">
+          {recommendations.map((rec) => (
+            <div key={rec.id} className="col-6 mb-3 position-relative">
+              <Link
+                to={`/movie/${rec.id}-${rec.title?.replaceAll(" ", "-").toLowerCase()}`}
+                onClick={handleClick}
+              >
+                <LazyLoadImage
+                  className="img"
+                  src={`https://image.tmdb.org/t/p/w250_and_h141_face/${rec.backdrop_path}`}
+                  alt={`${rec.title} background`}
+                  placeholderSrc={posterPlaceholder}
+                  effect="blur"
+                  width="100%"
+                  height="auto"
+                  style={{ aspectRatio: 3 / 2 }}
+                />
+              </Link>
+              <div className="position-absolute recommendation-title fw-bold">{rec.title}</div>
             </div>
-          </Link>
-        ))
+          ))}
+        </div>
       ) : (
-        <p>No recommendations available.</p>
+        <div className="text-secondary">
+          <p>
+            {language === "en-US"
+              ? "There are no recommendations for this movie."
+              : "Bu film için tavsiye yok."}
+          </p>
+        </div>
       )}
     </div>
-  );
+  )
 }
 
-export default Recommendations;
+export default Recommendations

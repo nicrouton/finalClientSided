@@ -87,12 +87,12 @@ function Movies() {
 
                                         {movie.vote_average === 0 ? (
                                             <div className="imdb-rating" style={{ color: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                <span style={{ fontSize: "12px" }}>Rating:</span>
+                                                <span style={{ fontSize: "12px" }}>⭐ Rating:</span>
                                                 <span>NR</span>
                                             </div>
                                         ) : (
                                             <div className="imdb-rating" style={{ color: "black", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                                <span style={{ fontSize: "12px" }}>Rating:</span>
+                                                <span style={{ fontSize: "12px" }}>⭐ Rating:</span>
                                                 <span>{movie.vote_average.toFixed(1)}</span>
                                             </div>
                                         )}

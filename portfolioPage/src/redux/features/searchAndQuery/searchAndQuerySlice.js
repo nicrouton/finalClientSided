@@ -1,37 +1,38 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const base_url = import.meta.env.VITE_BASE_URL
-
+const base_url = '/api';
 
 export const getSearchAndQuery = createAsyncThunk("getSearchAndQuery", async (input) => {
-    const response = await axios.get(`${base_url}/search?query=${input}`);
-    return response.data;
+  const response = await axios.get(`${base_url}/search?query=${input}`);
+  return response.data;
 });
 
 const initialState = {
-    loading: false,
-    movies: [],
-    error: ""
-}
+  loading: false,
+  movies: [],
+  error: ""
+};
 
-export const searchAndQuerySlice = createSlice({
-    name: "searchAndQuery",
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(getSearchAndQuery.pending, (state) => {
-            state.loading = true
-        }),
-            builder.addCase(getSearchAndQuery.fulfilled, (state, action) => {
-                state.loading = false
-                state.movies = action.payload
-            }),
-            builder.addCase(getSearchAndQuery.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
-            })
-    }
-})
+const searchAndQuerySlice = createSlice({
+  name: "searchAndQuery",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getSearchAndQuery.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(getSearchAndQuery.fulfilled, (state, action) => {
+        state.loading = false;
+        state.movies = Array.isArray(action.payload) ? action.payload : [];
+      })
+      .addCase(getSearchAndQuery.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
 
-export default searchAndQuerySlice.reducer
+export default searchAndQuerySlice.reducer;

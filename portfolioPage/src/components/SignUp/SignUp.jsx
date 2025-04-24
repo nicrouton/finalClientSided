@@ -12,7 +12,6 @@ const SignUp = () => {
     password: ''
   });
   const handleChange = (e) => {
-    // extracting name and value from target
     const {name, value} = e.target;
     setForm( (prevData) => ({
       ...prevData,

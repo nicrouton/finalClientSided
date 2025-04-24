@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const base_url = import.meta.env.VITE_BASE_URL
+const base_url = '/api'
 
 export const getRecommendations = createAsyncThunk("getRecommendations", async (id) => {
     const response = await axios.get(`${base_url}/recommendations/${id}`);

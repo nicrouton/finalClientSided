@@ -1,37 +1,45 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const api_key = import.meta.env.VITE_API_KEY
-const base_url = import.meta.env.VITE_BASE_URL
+const base_url = '/api';
 
 export const getVideo = createAsyncThunk("getVideo", async ({ id, language }) => {
-    const response = await axios.get(`${base_url}/video/${id}?language=${language}`);
-    return response.data;
+  const response = await axios.get(`${base_url}/video/${id}?language=${language}`);
+  return response.data;
 });
 
 const initialState = {
-    loading: false,
-    video: {},
-    error: ""
-}
+  loading: false,
+  video: {},
+  error: ""
+};
 
-export const videoSlice = createSlice({
-    name: "video",
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(getVideo.pending, (state) => {
-            state.loading = true
-        }),
-            builder.addCase(getVideo.fulfilled, (state, action) => {
-                state.loading = false
-                state.video = action.payload
-            }),
-            builder.addCase(getVideo.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.error.message
-            })
+const videoSlice = createSlice({
+  name: "video",
+  initialState,
+  reducers: {
+    clearVideo: (state) => {
+      state.video = {};
+      state.loading = false;
+      state.error = "";
     }
-})
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getVideo.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(getVideo.fulfilled, (state, action) => {
+        state.loading = false;
+        state.video = action.payload;
+      })
+      .addCase(getVideo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  }
+});
 
-export default videoSlice.reducer
+export const { clearVideo } = videoSlice.actions;
+export default videoSlice.reducer;
