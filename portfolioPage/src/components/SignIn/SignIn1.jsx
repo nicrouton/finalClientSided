@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bg from "../../assets/images/bg.jpg";
-import "./SigninPage.css";
+import "./Signinpage.css";
 
 const GSignIn1 = () => {
   const navigate = useNavigate();
