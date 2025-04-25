@@ -15,7 +15,8 @@ const apiKey = process.env.API_IMDB;
 const allowedOrigins = [
   'http://localhost:5173',
   'https://watchclub-frontend-labib-khan.onrender.com',
-  'https://watchclub-backend-labib-khan.onrender.com'
+  'https://watchclub-backend-labib-khan.onrender.com',
+  'http://localhost:5174'
 ];
 
 const corsOptions = {
