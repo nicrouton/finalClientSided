@@ -9,7 +9,7 @@ import Home from "./pages/Home";
 import Details from "./pages/Details";
 import NotFound from "./pages/NotFound";
 import NavigationBar from "./components/NavigationBar/NavigationBar";
-import Dashboard from "./pages/Ppage";
+import Dashboard from "./pages/pPage";
 import MakeAccount from "./components/SignIn/CreateAccount";
 import GSignIn1 from "./components/SignIn/SignIn1";
 import Tellaboutself from "./components/SignIn/TellAboutSelf";
